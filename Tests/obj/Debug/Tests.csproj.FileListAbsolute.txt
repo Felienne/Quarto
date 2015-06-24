@@ -1,0 +1,16 @@
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\bin\Debug\Tests.dll
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\bin\Debug\Tests.pdb
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\bin\Debug\BNFify.exe
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\bin\Debug\BNFify.pdb
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\bin\Debug\BNFify.xml
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\obj\Debug\Tests.dll
+C:\Users\Felienne\Dropbox\Code\BNFify\Tests\obj\Debug\Tests.pdb
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\bin\Debug\Tests.dll
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\bin\Debug\Tests.pdb
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\bin\Debug\BNFify.exe
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\bin\Debug\BNFify.pdb
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\bin\Debug\BNFify.xml
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\obj\Debug\Tests.dll
+C:\Users\Felienne\Dropbox\Code\CNFify\Tests\obj\Debug\Tests.pdb

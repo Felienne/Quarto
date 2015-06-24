@@ -1,0 +1,9 @@
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\MinisatGenerator.exe.config
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\MinisatGenerator.exe
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\MinisatGenerator.pdb
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\BNFify.exe
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\BNFify.pdb
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\bin\Debug\BNFify.xml
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\obj\Debug\MinisatGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\obj\Debug\MinisatGenerator.exe
+C:\Users\Felienne\Dropbox\Code\CNFify\MinisatGenerator\obj\Debug\MinisatGenerator.pdb
