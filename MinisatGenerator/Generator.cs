@@ -47,24 +47,19 @@ namespace SatGenerator
             NotAllTheSame();
 
             //combine all rules
-            FSharpList<CNFify.Term> FAllPropositions = ListModule.OfSeq(AllPropositions);
+            FSharpList<CNFify.Term> FSharpAllPropositions = ListModule.OfSeq(AllPropositions);
+            CNFify.Term all = CNFify.createAndFromList(FSharpAllPropositions);
 
-
-            CNFify.Term result = CNFify.normalize(CNFify.createAndFromList(FAllPropositions));
-
-            //now make a collection of the ands
-
-            var b = CNFify.createListfromAnd(result);
+            var printedCNF = CNFify.makeDimacs(all);
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("..\\..\\..\\Minisat\\input"))
             {
-                file.WriteLine("p cnf 64 " + b.Count().ToString());
-                foreach (var line in b)
+                file.WriteLine("p cnf 64 " + printedCNF.Count().ToString());
+                foreach (var line in printedCNF)
                 {
-                    file.WriteLine(CNFify.printMinisat(line) + " 0");
+                    file.WriteLine(line);
                 }
             }
-
         }
 
         private static void NotAllTheSame()

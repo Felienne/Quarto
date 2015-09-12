@@ -62,6 +62,8 @@ let rec normalize (T:Term) =  //apply normalize until fixpoint is reached
     
     if y=T then y else normalize (y)
 
+//make a big /\ or all the list elements, added to make it easy to generate lots of separate things that
+//should hold and then concatenate it
 let rec createAndFromList (L: List<Term>) = 
     match L with
     | a :: [] -> a
@@ -82,15 +84,13 @@ let rec printMinisat (T:Term):string =
     | Not t -> "-" + printMinisat t 
     | Or (a,b) -> printMinisat a + " " + printMinisat b 
 
-
-let makeDimacs(L: List<Term>) =
-    createAndFromList L |> 
-    normalize |>
-    createListfromAnd |>
-    List.map printMinisat |>
-    List.map appendZero |>
-    Seq.distinct 
-
+//takes in a list and prints it in dimacs format
+let makeDimacs(T:Term) = 
+    normalize T |>                      //normalize to CNF
+    createListfromAnd |>                // make a list of all the disjunctions (clauses)
+    List.map printMinisat |>            //print each clause
+    List.map appendZero |>              //put a zero at the end (why? who knows?!)
+    Seq.distinct                        //filter the duplicates
 
 
 [<EntryPoint>]
