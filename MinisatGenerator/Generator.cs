@@ -46,9 +46,6 @@ namespace SatGenerator
             //add the rules that not all stones should be the same
             NotAllTheSame();
 
-
-
-
             //combine all rules
             FSharpList<CNFify.Term> FAllPropositions = ListModule.OfSeq(AllPropositions);
 

@@ -1,6 +1,4 @@
-﻿// Learn more about F# at http://fsharp.net
-// See the 'F# Tutorial' project for more help.
-module CNFify
+﻿module CNFify
 open System
 
 type Term = 
@@ -64,7 +62,6 @@ let rec normalize (T:Term) =  //apply normalize until fixpoint is reached
     
     if y=T then y else normalize (y)
 
-
 let rec createAndFromList (L: List<Term>) = 
     match L with
     | a :: [] -> a
@@ -76,19 +73,35 @@ let rec createListfromAnd (T:Term) =
     | And (a, b) -> List.append (createListfromAnd a) (createListfromAnd b)
     | _ -> [T]
 
-
-    
+let appendZero (s:string):string = 
+    s + " 0" 
+ 
 let rec printMinisat (T:Term):string = 
     match T with 
-    | Var s -> "7"+s
+    | Var s -> "1"+s
     | Not t -> "-" + printMinisat t 
     | Or (a,b) -> printMinisat a + " " + printMinisat b 
+
+
+let makeDimacs(L: List<Term>) =
+    createAndFromList L |> 
+    normalize |>
+    createListfromAnd |>
+    List.map printMinisat |>
+    List.map appendZero |>
+    Seq.distinct 
+
 
 
 [<EntryPoint>]
 let main argv =
 
-    printfn "%A" argv
+    let s = Var "a"
+
+    printfn "%s" (printMinisat s)
+    
+
+
     
     let s = Console.ReadLine()
     
