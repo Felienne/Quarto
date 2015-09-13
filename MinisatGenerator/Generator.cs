@@ -54,11 +54,7 @@ namespace SatGenerator
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("..\\..\\..\\Minisat\\input"))
             {
-                file.WriteLine("p cnf 64 " + printedCNF.Count().ToString());
-                foreach (var line in printedCNF)
-                {
-                    file.WriteLine(line);
-                }
+                file.WriteLine("p cnf 64 " + printedCNF);
             }
         }
 

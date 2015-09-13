@@ -75,8 +75,11 @@ let rec createListfromAnd (T:Term) =
     | And (a, b) -> List.append (createListfromAnd a) (createListfromAnd b)
     | _ -> [T]
 
-let appendZero (s:string):string = 
-    s + " 0" 
+let mergeWithLineBreaks(L : List<string>):string =
+    
+    //add linebreaks bewteen clauses and put a zero at the end (why? who knows?!)
+
+    List.fold (fun acc elem -> acc + " \n" +  elem + " 0") (string (List.length L)) (L)
  
 let rec printMinisat (T:Term):string = 
     match T with 
@@ -89,8 +92,9 @@ let makeDimacs(T:Term) =
     normalize T |>                      //normalize to CNF
     createListfromAnd |>                // make a list of all the disjunctions (clauses)
     List.map printMinisat |>            //print each clause
-    List.map appendZero |>              //put a zero at the end (why? who knows?!)
-    Seq.distinct                        //filter the duplicates
+    Seq.distinct |>                        //filter the duplicates
+    Seq.toList |>
+    mergeWithLineBreaks
 
 
 [<EntryPoint>]
