@@ -63,35 +63,34 @@ let rec normalize (T:Term) =  //apply normalize until fixpoint is reached
     if y=T then y else normalize (y)
 
 //make a big /\ or all the list elements, added to make it easy to generate lots of separate things that
-//should hold and then concatenate it
+//should hold and then concatenate them
 let rec createAndFromList (L: List<Term>) = 
     match L with
     | a :: [] -> a
     | a::tail -> And (a, createAndFromList(tail))
 
-let rec createListfromAnd (T:Term) = 
+//flatten list with (possibly) nested ands into a list of all or-clauses
+let rec flattenTermtoList (T:Term) = 
     match T with
     | And ( Var a, Var b) -> [ Var a; Var b]
-    | And (a, b) -> List.append (createListfromAnd a) (createListfromAnd b)
+    | And (a, b) -> List.append (flattenTermtoList a) (flattenTermtoList b)
     | _ -> [T]
 
 let mergeWithLineBreaks(L : List<string>):string =
-    
     //add linebreaks bewteen clauses and put a zero at the end (why? who knows?!)
-
     List.fold (fun acc elem -> acc + " \n" +  elem + " 0") (string (List.length L)) (L)
  
-let rec printMinisat (T:Term):string = 
+let rec printClause (T:Term):string = 
     match T with 
     | Var s -> "1"+s
-    | Not t -> "-" + printMinisat t 
-    | Or (a,b) -> printMinisat a + " " + printMinisat b 
+    | Not t -> "-" + printClause t 
+    | Or (a,b) -> printClause a + " " + printClause b 
 
 //takes in a list and prints it in dimacs format
 let makeDimacs(T:Term) = 
     normalize T |>                      //normalize to CNF
-    createListfromAnd |>                // make a list of all the disjunctions (clauses)
-    List.map printMinisat |>            //print each clause
+    flattenTermtoList |>                // make a list of disjunctions (clauses) only
+    List.map printClause |>            //print each clause
     Seq.distinct |>                        //filter the duplicates
     Seq.toList |>
     mergeWithLineBreaks
