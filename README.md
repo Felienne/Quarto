@@ -83,8 +83,8 @@ Using the library from F Sharp is super easy:
  * Create a new F Sharp Project
  * Add a reference to CNFify
  * Add 'open CNFify' to the top of your .fs file
- * Make one big clause (maybe with the helper superconjunction!) 
- * makeDimacs gives you a string to put into any SAY solver
+ * Make one big clause (maybe with the helper superconjunction) 
+ * makeDimacs gives you a string to put into any SAT solver
  
 ## From C Sharp
 
@@ -129,6 +129,10 @@ F Sharp lists and C Sharp lists are not the same! So if you create a list of CNF
 
 FSharpList<CNFify.Term> listFSharp = ListModule.OfSeq(listCSharp);  
 CNFify.Term all = CNFify.createAndClauseFromList(listFSharp);  
+
+### Generating the dimacs file
+
+string letsPrintThis = CNFify.makeDimacs(clause)
 
 
 # Quarto
