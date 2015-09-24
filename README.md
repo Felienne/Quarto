@@ -41,6 +41,39 @@ you get the equivalent dimacs format.
 
 Happy SAT solving!
 
+# The basics
+
+## Variables
+ 
+Define vars by making a Var:
+let A = Var "A"  
+etc.
+
+## Clauses 
+Make clauses with And Or and Not:
+
+let clause = A or (B and C) and (not D)  
+
+## Helper functions
+
+### Equal
+
+I did not feel like including a real boolean equality symbol in my language, as it leads to a lot more rewrite rules, but there is a mapping, equal: 
+
+let equal (a:Term, b:Term) =   
+    And (Or (Not(a), b), Or (Not(b), a))  
+
+### Superconjuction
+
+When generating SAT input, often you are creating a conjunction of lots of things. this needs to hold, and this and that. Therefore I threw in a nice little helper:
+
+let rec createAndClauseFromList (L: List<Term>) =   
+    match L with  
+    | a :: [] -> a  
+    | a::tail -> And (a, createAndClauseFromList(tail))  
+
+Ypu put in a list of terms and you get one big conjunction.
+
 # How to use this library
 
 ## From F Sharp
@@ -50,24 +83,21 @@ Using the library from F Sharp is super easy:
  * Create a new F Sharp Project
  * Add a reference to CNFify
  * Add 'open CNFify' to the top of your .fs file
+ * Make one big clause (maybe with the helper superconjunction!) 
+ * makeDimacs gives you a string to put into any SAY solver
  
-### Defining variables
- 
-Define vars by making a Var: let x = Var "b"
-
-### Creating clauses 
-Make clauses with And Or and Not as explained above
-
 ## From C Sharp
 
-From C# it is a bit more involved:
+The basics from C Sharp are easy too:
  * Create a new C Sharp Project
  * Add a reference to CNFify
  * Add 'using CNFify' to the top of your .cs file
 
+But, the rest is a bit more involved unfortunately. 
+
 ### Defining variables
 
-Defining variables too is a bit more cumbersome from C Sharp. Each type you define in an F Sharp project automatically gets a constructor that starts with new. Thus, you make a new instance of a type with:
+Defining variables  is a bit more cumbersome from C Sharp. Each type you define in an F Sharp project automatically gets a constructor that starts with new. Thus, you make a new instance of a type with:
 
 var name = CNFify.Term.NewVar("name");  
 var name2 = CNFify.Term.NewVar("name2");  
@@ -86,6 +116,20 @@ var name2 = CNFify.Term.NewVar("name");
 name and name2 will be equal! This has bitten me in the ass, beware it does not happen to you too :)
 
 If you need inspiration, this library comes with a demo project, Quarto, see below.
+
+### Using the equal helper function
+
+Because equal is a function and not a type, there is no 'new' constructor needed:
+
+var E = CNFify.equal(A, B);
+
+### Using the superconjunction helper function
+
+F Sharp lists and C Sharp lists are not the same! So if you create a list of CNFify.Terms in your C Sharp code, you need a bit of magic to use th helper:
+
+FSharpList<CNFify.Term> listFSharp = ListModule.OfSeq(listCSharp);  
+CNFify.Term all = CNFify.createAndClauseFromList(listFSharp);  
+
 
 # Quarto
 
