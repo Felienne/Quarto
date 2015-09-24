@@ -62,38 +62,58 @@ let rec normalize (T:Term) =  //apply normalize until fixpoint is reached
     
     if y=T then y else normalize (y)
 
-//make a big /\ or all the list elements, added to make it easy to generate lots of separate things that
+//make a big /\ or all the list elements, included to make it easy to generate lots of separate things that
 //should hold and then concatenate them
-let rec createAndFromList (L: List<Term>) = 
+let rec createAndClauseFromList (L: List<Term>) = 
     match L with
     | a :: [] -> a
-    | a::tail -> And (a, createAndFromList(tail))
+    | a::tail -> And (a, createAndClauseFromList(tail))
 
-//flatten list with (possibly) nested ands into a list of all or-clauses
+//flatten list with (possibly) nested 'ands' into a list of all or-clauses
 let rec flattenTermtoList (T:Term) = 
     match T with
     | And ( Var a, Var b) -> [ Var a; Var b]
     | And (a, b) -> List.append (flattenTermtoList a) (flattenTermtoList b)
     | _ -> [T]
 
-let mergeWithLineBreaks(L : List<string>):string =
-    //add linebreaks bewteen clauses and put a zero at the end (why? who knows?!)
-    List.fold (fun acc elem -> acc + " \n" +  elem + " 0") (string (List.length L)) (L)
- 
-let rec printClause (T:Term):string = 
+let mergeWithLineBreaks(nVars : int) (L : List<string>):string =
+    //add linebreaks bewteen clauses and put a zero at the end of each line (why? who knows?!)
+    
+    //the first line of dimacs is always "p cnf" followd by the number of vars and the number of clauses (in list L)
+    let firstLine = "p cnf " + string(nVars) + " " + string (List.length L) 
+
+    List.fold (fun acc elem -> acc + " \n" +  elem + " 0") (firstLine) (L)
+
+let rec allVars (T:Term): Set<string> = //makes a list of all variables
     match T with 
-    | Var s -> "1"+s
-    | Not t -> "-" + printClause t 
-    | Or (a,b) -> printClause a + " " + printClause b 
+    | Var s -> Set.singleton(s)
+    | Not t -> allVars(t)
+    | And (a,b) -> Set.union (allVars a) (allVars b)  
+    | Or (a,b) -> Set.union (allVars a) (allVars b) 
+
+let makeMap (T:Term) = //makes a list of all variables, to transform each name to an int
+    Set.toList (allVars T)
+
+let applyMap (L:List<string>) (s:string):int = //given a list of variables, get the number of this variable
+    (List.findIndex ((=) s) L) + 1  //find the number in the map (which is a list) and add 1 as variables may not be named 0
+
+let rec printClause (L:List<string>) (T:Term):string = 
+    match T with 
+    | Var s -> (applyMap L s).ToString()
+    | Not t -> "-" + printClause L t  
+    | Or (a,b) -> printClause L a  + " " + printClause L b 
 
 //takes in a list and prints it in dimacs format
 let makeDimacs(T:Term) = 
-    normalize T |>                      //normalize to CNF
-    flattenTermtoList |>                // make a list of disjunctions (clauses) only
-    List.map printClause |>            //print each clause
-    Seq.distinct |>                        //filter the duplicates
-    Seq.toList |>
-    mergeWithLineBreaks
+
+    let map = (makeMap T) 
+    
+    normalize T |>                              //normalize to CNF
+    flattenTermtoList |>                        // make a list of disjunctions (clauses) only
+    List.map (printClause map) |>               //print each clause, using the variable mapping over the entire clause
+    Seq.distinct |>                             //filter the duplicates
+    Seq.toList |>                               //put it in a list
+    mergeWithLineBreaks (map.Length)            //merge all clauses into 1 string with linebreaks in between
 
 
 [<EntryPoint>]
@@ -101,7 +121,7 @@ let main argv =
 
     let s = Var "a"
 
-    printfn "%s" (printMinisat s)
+    printfn "%s" (makeDimacs s)
     
 
 

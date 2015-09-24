@@ -8,7 +8,7 @@
     <ProjectGuid>517bd6c8-b348-45de-b0f4-31331c10a6b9</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>BNFify</RootNamespace>
-    <AssemblyName>BNFify</AssemblyName>
+    <AssemblyName>CNFify</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>

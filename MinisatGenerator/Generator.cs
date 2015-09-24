@@ -48,13 +48,13 @@ namespace SatGenerator
 
             //combine all rules
             FSharpList<CNFify.Term> FSharpAllPropositions = ListModule.OfSeq(AllPropositions);
-            CNFify.Term all = CNFify.createAndFromList(FSharpAllPropositions);
+            CNFify.Term all = CNFify.createAndClauseFromList(FSharpAllPropositions);
 
-            var printedCNF = CNFify.makeDimacs(all);
+            var dimacs = CNFify.makeDimacs(all);
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter("..\\..\\..\\Minisat\\input"))
             {
-                file.WriteLine("p cnf 64 " + printedCNF);
+                file.WriteLine(dimacs);
             }
         }
 
@@ -146,7 +146,7 @@ namespace SatGenerator
 
             CNFify.Term NotAllSame =
                 CNFify.Term.NewNot(
-                    CNFify.createAndFromList(ListModule.OfSeq(input))
+                    CNFify.createAndClauseFromList(ListModule.OfSeq(input))
                 );
 
             return NotAllSame;

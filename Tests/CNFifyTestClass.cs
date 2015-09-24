@@ -99,37 +99,37 @@ namespace CNFifyTests
 
         
 
-        [TestMethod]
-        public void MakeAndList()
-        {
-            // (a ∧ (b ∧ c)  ----> AndList (a; b; c) 
+        //[TestMethod]
+        //public void MakeAndList()
+        //{
+        //    // (a ∧ (b ∧ c)  ----> AndList (a; b; c) 
 
-            var T = CNFify.Term.NewAnd(a, CNFify.Term.NewAnd(b,c));
+        //    var T = CNFify.Term.NewAnd(a, CNFify.Term.NewAnd(b,c));
 
-            var result = CNFify.createListfromAnd(T);
+        //    var result = CNFify.createAndClauseFromList(T);
 
-            List<CNFify.Term> abcList = new List<CNFify.Term>() { a, b, c };
+        //    List<CNFify.Term> abcList = new List<CNFify.Term>() { a, b, c };
 
-            FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
+        //    FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
 
-            Assert.AreEqual(expected, result);
-        }
+        //    Assert.AreEqual(expected, result);
+        //}
 
-        [TestMethod]
-        public void MakeAndListWithOr()
-        {
-            // (a ∧ (b ∨ c))  ----> AndList (a; b ∨ c) 
+        //[TestMethod]
+        //public void MakeAndListWithOr()
+        //{
+        //    // (a ∧ (b ∨ c))  ----> AndList (a; b ∨ c) 
 
-            var T = CNFify.Term.NewAnd(a, CNFify.Term.NewOr(b, c));
+        //    var T = CNFify.Term.NewAnd(a, CNFify.Term.NewOr(b, c));
 
-            var result = CNFify.createListfromAnd(T);
+        //    var result = CNFify.createAndClauseFromList(T);
 
-            List<CNFify.Term> abcList = new List<CNFify.Term>() { a, CNFify.Term.NewOr(b, c) };
+        //    List<CNFify.Term> abcList = new List<CNFify.Term>() { a, CNFify.Term.NewOr(b, c) };
 
-            FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
+        //    FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
 
-            Assert.AreEqual(expected, result);
-        }
+        //    Assert.AreEqual(expected, result);
+        //}
 
 
     }
