@@ -51,11 +51,11 @@ Using the library from F Sharp is super easy:
  * Add a reference to CNFify
  * Add 'open CNFify' to the top of your .fs file
  
- ### Defining variables
+### Defining variables
  
 Define vars by making a Var: let x = Var "b"
 
- ### Creating clauses 
+### Creating clauses 
 Make clauses with And Or and Not as explained above
 
 ## From C Sharp
@@ -69,23 +69,23 @@ From C# it is a bit more involved:
 
 Defining variables too is a bit more cumbersome from C Sharp. Each type you define in an F Sharp project automatically gets a constructor that starts with new. Thus, you make a new instance of a type with:
 
-var name = CNFify.Term.NewVar("name");
-var name2 = CNFify.Term.NewVar("name2");
+var name = CNFify.Term.NewVar("name");  
+var name2 = CNFify.Term.NewVar("name2");  
 
- ### Creating clauses 
+### Creating clauses 
 
 In a similar fasion, you can make a new 'And':
 
-var bothNames = CNFify.Term.NewAnd(name, name2);
+var bothNames = CNFify.Term.NewAnd(name, name2);  
 
 A word of advice: the name of the string, not the variable are mapped!, So similar string will get the same variable is in dimacs, so if you define
 
-var name = CNFify.Term.NewVar("name");
-var name2 = CNFify.Term.NewVar("name");
+var name = CNFify.Term.NewVar("name");  
+var name2 = CNFify.Term.NewVar("name");  
 
 name and name2 will be equal! This has bitten me in the ass, beware it does not happen to you too :)
 
-If you need inspiration, this library comes with a demo project, Quarto.
+If you need inspiration, this library comes with a demo project, Quarto, see below.
 
 # Quarto
 
