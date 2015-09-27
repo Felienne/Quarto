@@ -145,4 +145,4 @@ This repo also contains the C# code that generates the Quarto propositions, you 
 
 # That sounds awesome, but I like Python better
 
-No problem! My student David Hoepelman made a similar [library](https://github.com/dhoepelman/satispy)  for Python.
+No problem! There is a similar [library](https://github.com/netom/satispy) for Python.
