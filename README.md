@@ -142,3 +142,7 @@ The reason I made the DSL is because I wanted to generate SAT code for a specifi
 [![Board Game Night](http://image.slidesharecdn.com/felienne-online-150630181342-lva1-app6891/95/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers-1-638.jpg?cb=1435688136)](slideshare.net/Felienne/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers)
 
 This repo also contains the C# code that generates the Quarto propositions, you can use that as an inspiration.
+
+# That sounds awesome, but I like Python better
+
+No problem! My student David Hoepelman made a similar [library](https://github.com/dhoepelman/satispy)  for Python.
