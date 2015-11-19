@@ -39,6 +39,10 @@ let thatLooksNicer = makeDimacs clause
 
 you get the equivalent dimacs format.  
 
+You can also have the whole thing being solved for you by using 
+
+let satResult = theWholeShabang clause 
+
 Happy SAT solving!
 
 # The basics
@@ -65,14 +69,14 @@ let equal (a:Term, b:Term) =
 
 ### Superconjuction
 
-When generating SAT input, often you are creating a conjunction of lots of things. this needs to hold, and this and that. Therefore I threw in a nice little helper:
+When generating SAT input, often you are creating a conjunction of lots of things: this needs to hold, and this and that. Therefore I threw in a nice little helper:
 
 let rec createAndClauseFromList (L: List<Term>) =   
     match L with  
     | a :: [] -> a  
     | a::tail -> And (a, createAndClauseFromList(tail))  
 
-Ypu put in a list of terms and you get one big conjunction.
+You put in a list of terms and you get one big conjunction.
 
 # How to use this library
 
