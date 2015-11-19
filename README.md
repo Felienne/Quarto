@@ -135,6 +135,13 @@ CNFify.Term all = CNFify.createAndClauseFromList(listFSharp);
 
 string letsPrintThis = CNFify.makeDimacs(clause)
 
+### Running SAT
+
+var SATresult = CNFify.theWholeShabang(clause)
+
+This gives you a satResult that is or UNSAT or SAT with list of variables and their assignments:
+    | SAT of List<string * bool>
+    | UNSAT
 
 # Quarto
 
