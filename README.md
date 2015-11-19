@@ -4,7 +4,7 @@ Ever wanted to know if your favorite [boolean proposition](https://en.wikipedia.
 
 For example: 
 
-A or (B and C) and (not D)
+Or (A, And (And(B, C), Not (D)))
 
 Can we assign truth values to A, B, C and D such that this results in true?
 
@@ -31,7 +31,7 @@ etc.
 
 And then you can make propositions with And, Or and Not:  
 
-let clause = A or (B and C) and (not D)  
+let clause = Or (A, And (And(B, C), Not (D)))
 
 with a simple  
 
