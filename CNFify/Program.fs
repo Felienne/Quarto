@@ -1,5 +1,7 @@
 ﻿module CNFify
 open System
+open System.IO
+open System.Threading
 
 type Term = 
     | Var of string
@@ -108,14 +110,90 @@ let makeDimacs(T:Term) =
 
     let map = (makeMap T) 
     
-    normalize T |>                              //normalize to CNF
-    flattenTermtoList |>                        // make a list of disjunctions (clauses) only
-    List.map (printClause map) |>               //print each clause, using the variable mapping over the entire clause
-    Seq.distinct |>                             //filter the duplicates
-    Seq.toList |>                               //put it in a list
-    mergeWithLineBreaks (map.Length)            //merge all clauses into 1 string with linebreaks in between
+    normalize T |>                         //normalize to CNF
+    flattenTermtoList |>                   // make a list of disjunctions (clauses) only
+    List.map (printClause map) |>          //print each clause, using the variable mapping over the entire clause
+    Seq.distinct |>                        //filter the duplicates
+    Seq.toList |>                         //put it in a list
+    mergeWithLineBreaks (map.Length)      //merge all clauses into 1 string with linebreaks in between
 
 
+//----------------------------------------------------------------
+//parsing the output back to something sensible
+type minisatResult = 
+    | MiniSAT of List<string>
+    | MiniUNSAT
+
+type satResult = 
+    | SAT of List<string * bool>
+    | UNSAT
+
+let writeFile fileName bufferData =
+    async {
+      use outputFile = System.IO.File.Create(fileName)
+      do! outputFile.AsyncWrite(bufferData) 
+    }
+
+let runMinisat(input:string) =    
+    //let writer = System.IO.File.WriteAllText("C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\input", input)
+   
+    // create a stream to write to
+    //use stream = new System.IO.FileStream("C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\input",System.IO.FileMode.Create)
+
+    let bytes = System.Text.Encoding.ASCII.GetBytes(input)
+    // start
+    printfn "Starting async write"
+    let asyncResult = writeFile "C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\input" bytes
+
+    // create an async wrapper around an IAsyncResult
+    //let async = Async.AwaitIAsyncResult(asyncResult) |> Async.Ignore
+
+    // block on the timer now by waiting for the async to complete
+    Async.RunSynchronously asyncResult 
+
+    printfn "Done Writing"
+    
+    let p = new System.Diagnostics.Process()
+    p.StartInfo.FileName <- "C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\minisat.exe"
+    p.StartInfo.Arguments <- "C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\input C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\output"    
+    //p.StartInfo.UseShellExecute <- false set to true if you want to see all output 
+    ignore (p.Start()) 
+    p.WaitForExit()
+
+    let result = System.IO.File.ReadAllLines("C:\Users\Felienne\Dropbox\Code\Quarto\Minisat\output")
+
+    let firstline = (Array.get result 0)
+
+    if firstline = "SAT" 
+        then
+            let secondline = (Array.get result 1).Replace(" 0","") //get the assignment and remove the final zero 
+            MiniSAT (Seq.toList (secondline.Split(' '))) //if satisfiable, make alist out of the assignment
+        else MiniUNSAT 
+
+let isSatisfiable(S:minisatResult) = 
+    match S with
+        | MiniSAT x -> true
+        | MiniUNSAT -> false
+
+let getBoolfromAssignment(s:string) = //transform a result from sat (-varname) to a bool (below 0 = true, under = false)
+    int(s) > 0
+
+let zipTerm_Assignment(T:Term)(s: List<string>) = //zip the mapping and the assignment
+    List.zip (makeMap T)  (List.map getBoolfromAssignment s)
+
+let getSATfromMinisat(T:Term)(S:minisatResult) = 
+    match S with
+        | MiniSAT x -> SAT ((zipTerm_Assignment T) x)
+        | MiniUNSAT -> UNSAT
+
+let theWholeShabang(T:Term) =
+    makeDimacs T |>
+    runMinisat |>
+    getSATfromMinisat T
+
+
+    
+    
 [<EntryPoint>]
 let main argv =
 
