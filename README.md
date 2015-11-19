@@ -109,11 +109,11 @@ var name2 = CNFify.Term.NewVar("name2");
 
 ### Creating clauses 
 
-In a similar fasion, you can make a new 'And':
+In a similar fashion, you can make a new 'And':
 
 var bothNames = CNFify.Term.NewAnd(name, name2);  
 
-A word of advice: the name of the string, not the variable are mapped!, So similar string will get the same variable is in dimacs, so if you define
+A word of advice: the name in the string, not the name of variable are mapped! So similar strings will get the same variables in dimacs, so if you define
 
 var name = CNFify.Term.NewVar("name");  
 var name2 = CNFify.Term.NewVar("name");  
