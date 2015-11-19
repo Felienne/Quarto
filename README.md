@@ -139,6 +139,10 @@ string letsPrintThis = CNFify.makeDimacs(clause)
 
 The reason I made the DSL is because I wanted to generate SAT code for a specific goal: determining whether the board game Quarto can end in a tie. If you want full details, have a look at this slide deck (SlideShare)
 
-[![Board Game Night](http://image.slidesharecdn.com/felienne-online-150630181342-lva1-app6891/95/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers-1-638.jpg?cb=1435688136)](slideshare.net/Felienne/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers)
+[![Board Game Night](http://image.slidesharecdn.com/felienne-online-150630181342-lva1-app6891/95/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers-1-638.jpg?cb=1435688136)](http://slideshare.net/Felienne/a-board-game-night-with-geeks-attacking-quarto-ties-with-sat-solvers)
 
 This repo also contains the C# code that generates the Quarto propositions, you can use that as an inspiration.
+
+# That sounds awesome, but I like Python better
+
+No problem! There is a similar [library](https://github.com/netom/satispy) for Python.
