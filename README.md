@@ -89,7 +89,7 @@ Using the library from F Sharp is super easy:
  * Add 'open CNFify' to the top of your .fs file
  * Make one big clause (maybe with the helper superconjunction) 
  * makeDimacs gives you a string to put into any SAT solver
- * theWholeShebang runs minisat and gives you a SAT result, UNSAT or the truth assignment per variable:
+ * theWholeShabang runs minisat and gives you a SAT result, UNSAT or the truth assignment per variable
  
 ## From C Sharp
 
