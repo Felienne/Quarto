@@ -139,9 +139,7 @@ string letsPrintThis = CNFify.makeDimacs(clause)
 
 var SATresult = CNFify.theWholeShabang(clause)
 
-This gives you a satResult that is or UNSAT or SAT with list of variables and their assignments:
-    | SAT of List<string * bool>
-    | UNSAT
+This gives you a satResult that is or UNSAT or SAT with list of variables and their assignments.
 
 # Quarto
 
