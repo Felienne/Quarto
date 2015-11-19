@@ -4,7 +4,7 @@ Ever wanted to know if your favorite [boolean proposition](https://en.wikipedia.
 
 For example: 
 
-Or (A, And (And(B, C), Not (D)))
+A or (B and C and !D)
 
 Can we assign truth values to A, B, C and D such that this results in true?
 
@@ -85,6 +85,7 @@ Using the library from F Sharp is super easy:
  * Add 'open CNFify' to the top of your .fs file
  * Make one big clause (maybe with the helper superconjunction) 
  * makeDimacs gives you a string to put into any SAT solver
+ * theWholeShebang runs minisat and gives you the truth assignment per variable 
  
 ## From C Sharp
 
@@ -93,7 +94,7 @@ The basics from C Sharp are easy too:
  * Add a reference to CNFify
  * Add 'using CNFify' to the top of your .cs file
 
-But, the rest is a bit more involved unfortunately. 
+But, the rest is a bit more involved unfortunately:
 
 ### Defining variables
 
