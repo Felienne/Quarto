@@ -86,10 +86,6 @@ Using the library from F Sharp is super easy:
  * Make one big clause (maybe with the helper superconjunction) 
  * makeDimacs gives you a string to put into any SAT solver
  * theWholeShebang runs minisat and gives you a SAT result, UNSAT or the truth assignment per variable:
-
- satResult = 
-     | SAT of List<string * bool>
-     | UNSAT
  
 ## From C Sharp
 
