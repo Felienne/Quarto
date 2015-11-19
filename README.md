@@ -145,6 +145,8 @@ var SATresult = CNFify.theWholeShabang(clause)
 
 This gives you a satResult that is or UNSAT or SAT with list of variables and their assignments.
 
+SATresult = SAT of List\<string * bool\> | UNSAT
+
 # Quarto
 
 The reason I made the DSL is because I wanted to generate SAT code for a specific goal: determining whether the board game Quarto can end in a tie. If you want full details, have a look at this slide deck (SlideShare)
