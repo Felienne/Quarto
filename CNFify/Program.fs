@@ -187,12 +187,12 @@ let getSATfromMinisat(T:Term)(S:minisatResult) =
         | MiniUNSAT -> UNSAT
 
 let theWholeShabang(T:Term) =
-    makeDimacs T |>
-    runMinisat |>
-    getSATfromMinisat T
-
-
-    
+    match normalize(T) with
+    | False -> UNSAT
+    | True -> SAT List.empty
+    | _ -> makeDimacs T |>
+           runMinisat |>
+           getSATfromMinisat T
     
 [<EntryPoint>]
 let main argv =

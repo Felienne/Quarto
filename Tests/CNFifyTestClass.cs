@@ -100,88 +100,88 @@ namespace CNFifyTests
 
 
 
-        //[TestMethod]
-        //public void MakeAndList()
-        //{
-        //    // (a ∧ (b ∧ c)  ----> AndList (a; b; c) 
+        [TestMethod]
+        public void MakeAndList()
+        {
+            // (a ∧ (b ∧ c))  ----> AndList (a; b; c) 
 
-        //    var T = CNFify.Term.NewAnd(a, CNFify.Term.NewAnd(b, c));
+            var T = CNFify.Term.NewAnd(a, CNFify.Term.NewAnd(b, c));
 
-        //    //var result = CNFify.createAndClauseFromList(T);
+            var result = CNFify.flattenTermtoList(T);
 
-        //    List<CNFify.Term> abcList = new List<CNFify.Term>() { a, b, c };
+            List<CNFify.Term> abcList = new List<CNFify.Term>() { a, b, c };
 
-        //    FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
+            FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
 
-        //    Assert.AreEqual(expected, result);
-        //}
+            Assert.AreEqual(expected, result);
+        }
 
-        //[TestMethod]
-        //public void MakeAndListWithOr()
-        //{
-        //    // (a ∧ (b ∨ c))  ----> AndList (a; b ∨ c) 
+        [TestMethod]
+        public void MakeAndListWithOr()
+        {
+            // (a ∧ (b ∨ c))  ----> AndList (a; b ∨ c) 
 
-        //    var T = CNFify.Term.NewAnd(a, CNFify.Term.NewOr(b, c));
+            var T = CNFify.Term.NewAnd(a, CNFify.Term.NewOr(b, c));
 
-        //    //var result = CNFify.createAndClauseFromList(T);
+            var result = CNFify.flattenTermtoList(T);
 
-        //    List<CNFify.Term> abcList = new List<CNFify.Term>() { a, CNFify.Term.NewOr(b, c) };
+            List<CNFify.Term> abcList = new List<CNFify.Term>() { a, CNFify.Term.NewOr(b, c) };
 
-        //    FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
+            FSharpList<CNFify.Term> expected = ListModule.OfSeq(abcList);
 
-        //    Assert.AreEqual(expected, result);
-        //}
-
-
-
-        //[TestMethod]
-        //public void parseOutputSAT()
-        //{
-        //    string output = "SAT -1 2 -3 4 5 6 -7 8 9 -10 11 -12 13 14 15 16 17 18 19 -20 21 -22 23 24 -25 26 27 28 29 -30 -31 32 -33 -34 -35 36 -37 38 39 -40 -41 -42 43 -44 45 46 -47 -48 -49 -50 51 52 -53 54 -55 -56 57 -58 -59 -60 -61 -62 -63 -64";
-
-        //    //var result = CNFify.isSatisfiable(output);
-
-        //    //Assert.AreEqual(true, result);
-        //}
+            Assert.AreEqual(expected, result);
+        }
 
 
-        //[TestMethod]
-        //public void parseOutputUNSAT()
-        //{
-        //    string output = "UNSAT";
+        [TestMethod]
+        public void theWholeShebangFalse_returns_UNSAT()
+        {
+            // (a ∧ !a) results in UNSAT
 
-        //    //var result = CNFify.isSatisfiable(output);
+            var T = CNFify.Term.NewAnd(a, CNFify.Term.NewNot(a));
 
-        //    //Assert.AreEqual(false, result);
-        //}
+            var result = CNFify.theWholeShabang(T);
 
-        //[TestMethod]
-        //public void getAssignment()
-        //{
-        //    CNFify.Term A = CNFify.Term.NewVar("A");
-        //    CNFify.Term B = CNFify.Term.NewVar("B");
-        //    CNFify.Term T = CNFify.Term.NewAnd(A,B);
+            var expected = CNFify.satResult.UNSAT;
 
-        //    string output = "SAT 1 2";
+            Assert.AreEqual(expected, result);
+        }
 
-        //    //var result = CNFify.getAssignment(T,output);
+        [TestMethod]
+        public void theWholeShebangTrue_returns_SAT()
+        {
+            // (a ∨ !a) results in SAT with an empty assignment
 
-        //    Assert.AreEqual(2, result.Length);
-        //}
+            var T = CNFify.Term.NewOr(a, CNFify.Term.NewNot(a));
 
-        //[TestMethod]
-        //public void getAssignment()
-        //{            
-        //    CNFify.Term A = CNFify.Term.NewVar("A");
-        //    CNFify.Term B = CNFify.Term.NewVar("B");
-        //    CNFify.Term T = CNFify.Term.NewAnd(A, B);
+            var result = CNFify.theWholeShabang(T);
 
-        //    string output = CNFify.makeDimacs(T);
+            var expected = CNFify.satResult.NewSAT(ListModule.OfSeq(new List<System.Tuple<string, bool>>()));
 
-        //    var result = CNFify.runMinisat(output);
+            Assert.AreEqual(expected, result);
+        }
 
-        //    Assert.AreEqual(CNFify.minisatResult.MiniUNSAT, result);
-        //}
+
+        [TestMethod]
+        public void theWholeShebang_Simple_term_returns_SAT()
+        {
+            CNFify.Term T = CNFify.Term.NewAnd(a, b);
+
+            var result = CNFify.theWholeShabang(T);
+
+            var list = ListModule.OfSeq(new List<Tuple<string, bool>>
+            {
+                new Tuple<string, bool>("a", true),
+                new Tuple<string, bool>("b", true)
+
+            });
+
+            Assert.AreEqual(CNFify.satResult.NewSAT(list), result);
+
+        }
+
+
+
 
     }
 }
