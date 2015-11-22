@@ -4,7 +4,7 @@ Ever wanted to know if your favorite [boolean proposition](https://en.wikipedia.
 
 For example: 
 
-A or (B and C) and (not D)
+A or (B and C and !D)
 
 Can we assign truth values to A, B, C and D such that this results in true?
 
@@ -31,13 +31,17 @@ etc.
 
 And then you can make propositions with And, Or and Not:  
 
-let clause = A or (B and C) and (not D)  
+let clause = Or (A, And (And(B, C), Not (D)))
 
 with a simple  
 
 let thatLooksNicer = makeDimacs clause  
 
 you get the equivalent dimacs format.  
+
+You can also have the whole thing being solved for you by using 
+
+let satResult = theWholeShabang clause 
 
 Happy SAT solving!
 
@@ -65,14 +69,14 @@ let equal (a:Term, b:Term) =
 
 ### Superconjuction
 
-When generating SAT input, often you are creating a conjunction of lots of things. this needs to hold, and this and that. Therefore I threw in a nice little helper:
+When generating SAT input, often you are creating a conjunction of lots of things: this needs to hold, and this and that. Therefore I threw in a nice little helper:
 
 let rec createAndClauseFromList (L: List<Term>) =   
     match L with  
     | a :: [] -> a  
     | a::tail -> And (a, createAndClauseFromList(tail))  
 
-Ypu put in a list of terms and you get one big conjunction.
+You put in a list of terms and you get one big conjunction.
 
 # How to use this library
 
@@ -85,6 +89,7 @@ Using the library from F Sharp is super easy:
  * Add 'open CNFify' to the top of your .fs file
  * Make one big clause (maybe with the helper superconjunction) 
  * makeDimacs gives you a string to put into any SAT solver
+ * theWholeShabang runs minisat and gives you a SAT result, UNSAT or the truth assignment per variable
  
 ## From C Sharp
 
@@ -93,7 +98,7 @@ The basics from C Sharp are easy too:
  * Add a reference to CNFify
  * Add 'using CNFify' to the top of your .cs file
 
-But, the rest is a bit more involved unfortunately. 
+But, the rest is a bit more involved unfortunately:
 
 ### Defining variables
 
@@ -104,11 +109,11 @@ var name2 = CNFify.Term.NewVar("name2");
 
 ### Creating clauses 
 
-In a similar fasion, you can make a new 'And':
+In a similar fashion, you can make a new 'And':
 
 var bothNames = CNFify.Term.NewAnd(name, name2);  
 
-A word of advice: the name of the string, not the variable are mapped!, So similar string will get the same variable is in dimacs, so if you define
+A word of advice: the name in the string, not the name of variable are mapped! So similar strings will get the same variables in dimacs, so if you define
 
 var name = CNFify.Term.NewVar("name");  
 var name2 = CNFify.Term.NewVar("name");  
@@ -134,6 +139,13 @@ CNFify.Term all = CNFify.createAndClauseFromList(listFSharp);
 
 string letsPrintThis = CNFify.makeDimacs(clause)
 
+### Running SAT
+
+var SATresult = CNFify.theWholeShabang(clause)
+
+This gives you a satResult that is or UNSAT or SAT with list of variables and their assignments.
+
+SATresult = SAT of List\<string * bool\> | UNSAT
 
 # Quarto
 
